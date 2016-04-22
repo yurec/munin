@@ -1,0 +1,43 @@
+#!/bin/sh
+#%# family=auto
+#%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    echo 'graph_title Netapp 2240_1 CPU Interrupts'
+    echo 'graph_args --base 1000 -l 0'
+    echo 'graph_vlabel Ops'
+    echo 'graph_category Netapp_2240_1'
+
+    echo 'cpuInterrupts.label cpuInterrupts'
+    echo 'cpuInterrupts.type DERIVE'
+    echo 'cpuInterrupts.min 0'
+    echo 'cpuInterrupts.draw LINE2'
+
+    echo 'cpuNonCPInterrupts.label cpuNonCPInterrupts'
+    echo 'cpuNonCPInterrupts.type DERIVE'
+    echo 'cpuNonCPInterrupts.min 0'
+    echo 'cpuNonCPInterrupts.draw LINE2'
+    
+#    echo 'miscLowNfsOps.label miscLowNfsOps'
+#    echo 'miscLowNfsOps.type DERIVE'
+#    echo 'miscLowNfsOps.min 0'
+#    echo 'miscLowNfsOps.draw LINE2'
+
+exit 0
+fi
+
+echo -n "cpuNonCPInterrupts.value "
+(snmpget -v 2c -c public -O v 10.0.0.80 1.3.6.1.4.1.789.1.2.1.10.0  2>/dev/null | cut -d " " -f 2) || echo U
+
+echo -n "cpuInterrupts.value "
+(snmpget -v 2c -c public -O v 10.0.0.80 1.3.6.1.4.1.789.1.2.2.6.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+#echo -n "miscLowCifsOps.value "
+#(snmpget -v 2c -c public -O v 10.0.0.80 1.3.6.1.4.1.789.1.2.2.8.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+

@@ -1,0 +1,23 @@
+#!/bin/sh
+#%# family=auto
+#%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    echo 'graph_title CommuniGate open file descriptors'
+    echo 'graph_args --base 1000 -l 0'
+    echo 'graph_vlabel files'
+    echo 'graph_category CommuniGate'
+    echo 'files.label files'
+    echo 'files.type GAUGE'
+    echo 'files.min 0'
+    echo 'files.draw LINE2'
+    exit 0
+fi
+
+echo -n "files.value "
+lsof -X -p `pidof CGServer` 2>/dev/null | wc -l

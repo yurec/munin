@@ -1,0 +1,70 @@
+#!/bin/sh
+#%# family=auto
+#%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    echo 'graph_title Netapp 2020 & 2040_1 & 2040_2 Cifs connect users'
+    echo 'graph_args --base 1000 -l 0'
+    echo 'graph_vlabel Users'
+    echo 'graph_category Netapp'
+#    echo 'imap.label IMAP'
+#    echo 'imap.type GAUGE'
+#    echo 'imap.min 0'
+#    echo 'imap.draw AREA'
+#    echo 'http.label HTTP'
+#    echo 'http.type GAUGE'
+#    echo 'http.min 0'
+#    echo 'http.draw STACK'
+    echo 'users.label Users Netapp_2020'
+    echo 'users.type GAUGE'
+    echo 'users.min 0'
+    echo 'users.draw LINE2'
+
+    echo 'users1.label Users Netapp_2040_1'
+    echo 'users1.type GAUGE'
+    echo 'users1.min 0'
+    echo 'users1.draw LINE2'
+
+    echo 'users2.label Users Netapp_2040_2'
+    echo 'users2.type GAUGE'
+    echo 'users2.min 0'
+    echo 'users2.draw LINE2'
+
+
+    echo 'users3.label Users Netapp_2240_1'
+    echo 'users3.type GAUGE'
+    echo 'users3.min 0'
+    echo 'users3.draw LINE2'
+
+    echo 'users4.label Users Netapp_2240_2'
+    echo 'users4.type GAUGE'
+    echo 'users4.min 0'
+    echo 'users4.draw LINE2'
+
+    exit 0
+fi
+
+#echo -n "users.value "
+#(snmpget -v 2c -c public -O v 10.0.0.31 1.3.6.1.4.1.789.1.7.2.9.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+
+echo -n "users1.value "
+(snmpget -v 2c -c public -O v 10.0.0.51 1.3.6.1.4.1.789.1.7.2.9.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+
+echo -n "users2.value "
+(snmpget -v 2c -c public -O v 10.0.0.55 1.3.6.1.4.1.789.1.7.2.9.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+
+echo -n "users3.value "
+(snmpget -v 2c -c public -O v 10.0.0.80 1.3.6.1.4.1.789.1.7.2.9.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+
+echo -n "users4.value "
+(snmpget -v 2c -c public -O v 10.0.0.85 1.3.6.1.4.1.789.1.7.2.9.0 2>/dev/null | cut -d " " -f 2) || echo U
+

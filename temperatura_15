@@ -1,0 +1,62 @@
+#!/bin/sh
+#%# family=auto
+#%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    echo 'graph_title Temperatura 15'
+    echo 'graph_args -l 0 -u 60 -r --base 1000'
+    echo 'graph_vlabel Grad'
+    echo 'graph_category Temperatura'
+
+
+    echo 'gr.label Grad_proc_in'
+    echo 'gr.type GAUGE'
+    echo 'gr.min 20'
+    echo 'gr.draw LINE2'
+    
+    echo 'gr1.label Box'
+    echo 'gr1.type GAUGE'
+    echo 'gr1.min 0'
+    echo 'gr1.draw LINE2'
+    echo 'gr1.warning 31'
+    echo 'gr1.critical 35'
+    
+    
+    
+    echo 'gr2.label Rack'
+    echo 'gr2.type GAUGE'
+    echo 'gr2.min 0'
+    echo 'gr2.draw LINE2'
+    echo 'gr2.warning 29'
+    echo 'gr2.critical 32'
+    
+    
+    echo 'gr3.label UPS'
+    echo 'gr3.type GAUGE'
+    echo 'gr3.min 0'
+    echo 'gr3.draw LINE2'
+    echo 'gr3.warning 31'
+    echo 'gr3.critical 34'
+    
+    exit 0
+fi
+
+echo -n "gr.value "
+echo `(snmpget -v 1 -c public -O v 10.0.0.9 1.3.6.1.4.1.37758.1.10.1.2.1 2>/dev/null | cut -d " " -f 2) || echo U`"/10" | bc -l
+
+echo -n "gr1.value "
+echo `(snmpget -v 1 -c public -O v 10.0.0.9 1.3.6.1.4.1.37758.1.10.1.2.2 2>/dev/null | cut -d " " -f 2) || echo U`"/10" | bc -l
+
+echo -n "gr2.value "
+echo `(snmpget -v 1 -c public -O v 10.0.0.9 1.3.6.1.4.1.37758.1.10.1.2.3 2>/dev/null | cut -d " " -f 2) || echo U`"/10" | bc -l
+
+echo -n "gr3.value "
+echo `(snmpget -v 1 -c public -O v 10.0.0.9 1.3.6.1.4.1.37758.1.10.1.2.4 2>/dev/null | cut -d " " -f 2) || echo U`"/10" | bc -l
+
+
+

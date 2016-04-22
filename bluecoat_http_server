@@ -1,0 +1,43 @@
+#!/bin/sh
+#%# family=auto
+#%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    echo 'graph_title HttpServerBytes'
+    echo 'graph_args --base 1000 -l 0'
+    echo 'graph_vlabel Bytes'
+    echo 'graph_category BlueCoat'
+
+    echo 'sgProxyHttpServerInBytes.label sgProxyHttpServerInBytes'
+    echo 'sgProxyHttpServerInBytes.type DERIVE'
+    echo 'sgProxyHttpServerInBytes.min 0'
+    echo 'sgProxyHttpServerInBytes.draw LINE2'
+
+    echo 'sgProxyHttpServerOutBytes.label sgProxyHttpServerOutBytes'
+    echo 'sgProxyHttpServerOutBytes.type DERIVE'
+    echo 'sgProxyHttpServerOutBytes.min 0'
+    echo 'sgProxyHttpServerOutBytes.draw LINE2'
+    
+#    echo 'miscLowNfsOps.label miscLowNfsOps'
+#    echo 'miscLowNfsOps.type DERIVE'
+#    echo 'miscLowNfsOps.min 0'
+#    echo 'miscLowNfsOps.draw LINE2'
+
+exit 0
+fi
+
+echo -n "sgProxyHttpServerInBytes.value "
+(snmpget -v 2c -c public -O v 10.0.0.111 1.3.6.1.4.1.3417.2.11.3.1.2.3.0  2>/dev/null | cut -d " " -f 2) || echo U
+
+echo -n "sgProxyHttpServerOutBytes.value "
+(snmpget -v 2c -c public -O v 10.0.0.111 1.3.6.1.4.1.3417.2.11.3.1.2.4.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+#echo -n "miscLowCifsOps.value "
+#(snmpget -v 2c -c public -O v 10.0.0.31 1.3.6.1.4.1.789.1.2.2.8.0 2>/dev/null | cut -d " " -f 2) || echo U
+
+
